@@ -33,6 +33,10 @@ Also there is one more option called `packageDir`, this option is to specify the
 "import/no-extraneous-dependencies": ["error", {"packageDir": './some-dir/'}]
 ```
 
+A module path that is [ignored] or couldn't be resolved will not be reported when imported.
+
+[ignored]: ../README.md#importignore
+
 ## Rule Details
 
 Given the following `package.json`:

@@ -2,6 +2,8 @@ import path from 'path'
 import fs from 'fs'
 import readPkgUp from 'read-pkg-up'
 import minimatch from 'minimatch'
+import isIgnored from 'eslint-module-utils/ignore'
+import resolve from 'eslint-module-utils/resolve'
 import importType from '../core/importType'
 import isStaticRequire from '../core/staticRequire'
 
@@ -55,6 +57,11 @@ function optDepErrorMessage(packageName) {
 
 function reportIfMissing(context, deps, depsOptions, node, name) {
   if (importType(name, context) !== 'external') {
+    return
+  }
+  const resolved = resolve(name, context)
+
+  if (!resolved || isIgnored(resolved, context)) {
     return
   }
   const splitName = name.split('/')
