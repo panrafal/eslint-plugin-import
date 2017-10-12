@@ -69,14 +69,6 @@ ruleTester.run('no-extraneous-dependencies', rule, {
       code: 'import "doctrine"',
       options: [{packageDir: path.join(__dirname, '../../../')}],
     }),
-    test({
-      code: 'import bar from "not-a-dependency"',
-      settings: { 'import/ignore': ['/node_modules/'] },
-    }),
-    test({
-      code: 'import bar from "chai"',
-      settings: { 'import/ignore': ['/node_modules/'] },
-    }),
   ],
   invalid: [
     test({

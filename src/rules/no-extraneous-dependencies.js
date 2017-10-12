@@ -2,7 +2,6 @@ import path from 'path'
 import fs from 'fs'
 import readPkgUp from 'read-pkg-up'
 import minimatch from 'minimatch'
-import isIgnored from 'eslint-module-utils/ignore'
 import resolve from 'eslint-module-utils/resolve'
 import importType from '../core/importType'
 import isStaticRequire from '../core/staticRequire'
@@ -60,8 +59,7 @@ function reportIfMissing(context, deps, depsOptions, node, name) {
     return
   }
   const resolved = resolve(name, context)
-
-  if (!resolved || isIgnored(resolved, context)) {
+  if (!resolved) {
     return
   }
   const splitName = name.split('/')
