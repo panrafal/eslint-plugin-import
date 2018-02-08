@@ -8,13 +8,24 @@ import isStaticRequire from '../core/staticRequire'
 module.exports = {
   meta: {
     docs: {},
+    fixable: 'code',
+    schema: [
+      {
+        'type': 'object',
+        'properties': {
+          'fixable': { 'type': 'boolean' },
+        },
+        'additionalProperties': false,
+      },
+    ],
   },
 
   create: function noRelativePackages(context) {
+    const options = context.options[0]
 
     function findNamedPackage(filePath) {
       const found = readPkgUp.sync({cwd: filePath, normalize: false})
-      // console.log(found)
+
       if (found.pkg && !found.pkg.name) {
         return findNamedPackage(path.join(found.path, '../..'))
       }
@@ -50,6 +61,11 @@ module.exports = {
           node,
           message: 'Relative import from another package is not allowed. ' +
             `Use "${properImport}" instead of "${importPath}"`,
+          fix(fixer) {
+            if (options.fixable) {
+              return fixer.replaceText(node, `'${properImport}'`)
+            }
+          },  
         })
       }
     }
